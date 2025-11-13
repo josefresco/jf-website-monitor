@@ -17,7 +17,7 @@ A comprehensive website monitoring solution built with Next.js 14, TypeScript, a
 
 - **Frontend:** Next.js 14 (App Router), React 18, TypeScript, Tailwind CSS
 - **Backend:** Next.js API Routes, Node.js serverless functions
-- **Database:** PostgreSQL (Supabase recommended)
+- **Database:** Vercel Postgres (Prisma Postgres powered by Neon)
 - **ORM:** Prisma 5
 - **Monitoring:** GitHub Actions (cron scheduling)
 - **Alerts:** Brevo API (email), Telegram Bot API
@@ -28,7 +28,7 @@ A comprehensive website monitoring solution built with Next.js 14, TypeScript, a
 ### Prerequisites
 
 - Node.js 18+ installed
-- PostgreSQL database (Supabase free tier recommended)
+- Vercel account (free tier includes Postgres database)
 - Brevo account for email alerts (optional)
 - Telegram bot for Telegram alerts (optional)
 
@@ -79,13 +79,17 @@ A comprehensive website monitoring solution built with Next.js 14, TypeScript, a
 
    Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Database Setup with Supabase
+## Database Setup with Vercel Postgres
 
-1. Create a free account at [supabase.com](https://supabase.com)
-2. Create a new project
-3. Go to Settings → Database → Connection string
-4. Copy the **Transaction** pooler connection string
-5. Add it to your `.env` file as `DATABASE_URL`
+1. Go to your Vercel project dashboard
+2. Click the **Storage** tab
+3. Click **Create Database** → Choose **Postgres**
+4. Select the **Hobby** plan (free tier: 256 MB, 60 hours compute/month)
+5. Click **Connect** and use prefix `DATABASE_`
+6. The connection string is automatically added to your project
+7. Run migrations: `npx prisma db push`
+
+**Note:** Vercel Postgres is optimized for serverless functions and works perfectly with this application.
 
 ## Setting Up Alerts
 
@@ -338,9 +342,10 @@ Uses the `diff` library to calculate the percentage of lines changed between sna
 
 ### Database Connection Issues
 
-- Ensure `DATABASE_URL` is correct and includes `?schema=public`
-- For Supabase, use the Transaction pooler, not Session pooler
-- Check that database allows connections from your IP
+- Ensure `DATABASE_URL` is correct in Vercel environment variables
+- For Vercel Postgres, the connection is automatically configured
+- If using external database, ensure it allows connections from Vercel IPs
+- Run `npx prisma db push` to sync schema after changes
 
 ### GitHub Actions Not Triggering
 
@@ -397,12 +402,21 @@ Contributions are welcome! Please:
 
 MIT License - feel free to use this project for personal or commercial purposes.
 
+## Documentation
+
+- **[API Documentation](./docs/API.md)** - Complete API reference with examples
+- **[Architecture](./docs/ARCHITECTURE.md)** - Technical architecture and design decisions
+- **[Contributing Guide](./docs/CONTRIBUTING.md)** - How to contribute to the project
+- **[Setup Guide](./SETUP.md)** - Quick setup instructions
+- **[Deployment Guide](./DEPLOYMENT-FINAL.md)** - Production deployment guide
+
 ## Support
 
 For issues and questions:
-- Open an issue on GitHub
-- Check the troubleshooting section above
-- Review the specification document for detailed technical information
+- Open an issue on [GitHub](https://github.com/josefresco/jf-website-monitor/issues)
+- Check the [troubleshooting section](#troubleshooting) above
+- Review the [API documentation](./docs/API.md) for endpoint details
+- Check the [architecture documentation](./docs/ARCHITECTURE.md) for technical details
 
 ## Roadmap
 
