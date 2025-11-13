@@ -1,0 +1,11 @@
+{
+  "buildCommand": "prisma generate && npm run build",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "functions": {
+    "src/app/api/monitor/check/route.ts": {
+      "maxDuration": 300
+    }
+  }
+}

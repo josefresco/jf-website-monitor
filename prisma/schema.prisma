@@ -1,0 +1,116 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Website {
+  id                String    @id @default(cuid())
+  url               String    @unique
+  name              String
+  checkFrequency    Int       @default(300) // seconds (5 minutes default)
+  changeThreshold   Float     @default(10.0) // percentage
+  isActive          Boolean   @default(true)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  checks            Check[]
+  incidents         Incident[]
+  htmlSnapshots     HtmlSnapshot[]
+
+  @@index([isActive])
+}
+
+model Check {
+  id              String    @id @default(cuid())
+  websiteId       String
+  website         Website   @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+
+  statusCode      Int
+  responseTime    Int       // milliseconds
+  isUp            Boolean
+  htmlHash        String    // SHA-256 hash of normalized HTML
+  changePercent   Float?    // null for first check
+  hasChange       Boolean   @default(false)
+
+  timestamp       DateTime  @default(now())
+
+  errorMessage    String?   // if request failed
+
+  @@index([websiteId, timestamp])
+  @@index([timestamp])
+}
+
+model HtmlSnapshot {
+  id              String    @id @default(cuid())
+  websiteId       String
+  website         Website   @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+
+  htmlContent     String    @db.Text // normalized HTML
+  htmlHash        String    // SHA-256 hash
+  capturedAt      DateTime  @default(now())
+
+  @@index([websiteId, capturedAt])
+}
+
+model Incident {
+  id              String    @id @default(cuid())
+  websiteId       String
+  website         Website   @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+
+  type            IncidentType
+  startTime       DateTime
+  endTime         DateTime?
+  isResolved      Boolean   @default(false)
+
+  // Incident details
+  statusCode      Int?      // for downtime incidents
+  changePercent   Float?    // for content change incidents
+  description     String?
+
+  // Alert tracking
+  alertSent       Boolean   @default(false)
+  alertSentAt     DateTime?
+  resolutionAlertSent Boolean @default(false)
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([websiteId, isResolved])
+  @@index([startTime])
+}
+
+enum IncidentType {
+  DOWNTIME        // non-200 status code
+  CONTENT_CHANGE  // HTML change > threshold
+  TIMEOUT         // request timeout
+  ERROR           // other errors
+}
+
+model AlertConfig {
+  id              String    @id @default(cuid())
+
+  // Email settings
+  emailEnabled    Boolean   @default(true)
+  emailTo         String[]
+  emailFrom       String
+  brevoApiKey     String?   @db.Text
+
+  // Telegram settings
+  telegramEnabled Boolean   @default(true)
+  telegramBotToken String?  @db.Text
+  telegramChatId  String?
+
+  // Alert preferences
+  alertOnDown     Boolean   @default(true)
+  alertOnChange   Boolean   @default(true)
+  alertOnRecovery Boolean   @default(true)
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
