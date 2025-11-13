@@ -28,9 +28,17 @@ export default function WebsitesPage() {
     try {
       const res = await fetch('/api/websites')
       const data = await res.json()
-      setWebsites(data)
+
+      // Handle error response
+      if (!res.ok || !Array.isArray(data)) {
+        console.error('Error fetching websites:', data)
+        setWebsites([])
+      } else {
+        setWebsites(data)
+      }
     } catch (error) {
       console.error('Error fetching websites:', error)
+      setWebsites([])
     } finally {
       setLoading(false)
     }

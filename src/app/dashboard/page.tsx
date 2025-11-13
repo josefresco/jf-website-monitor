@@ -38,7 +38,18 @@ export default function DashboardPage() {
     try {
       // Fetch websites
       const websitesRes = await fetch('/api/websites?active=true')
-      const websites: Website[] = await websitesRes.json()
+      const websitesData = await websitesRes.json()
+
+      // Handle error response
+      if (!websitesRes.ok || !Array.isArray(websitesData)) {
+        console.error('Error fetching websites:', websitesData)
+        setStatuses([])
+        setLastUpdated(new Date())
+        setLoading(false)
+        return
+      }
+
+      const websites: Website[] = websitesData
 
       // Fetch status for each website
       const statusPromises = websites.map(async (website) => {
