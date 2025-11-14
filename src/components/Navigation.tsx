@@ -10,6 +10,7 @@ export default function Navigation() {
     { href: '/dashboard', label: 'Dashboard', icon: '📊' },
     { href: '/logs', label: 'Daily Logs', icon: '📅' },
     { href: '/reports', label: 'SLA Reports', icon: '📈' },
+    { href: '/snapshots', label: 'Snapshots', icon: '📸' },
     { href: '/websites', label: 'Websites', icon: '🌐' },
     { href: '/settings', label: 'Settings', icon: '⚙️' },
   ]
