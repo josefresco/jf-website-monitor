@@ -90,7 +90,7 @@ export default function ReportsPage() {
       )
       const data = await res.json()
 
-      if (res.ok) {
+      if (res.ok && data && data.uptime && data.performance && data.incidents && data.checks) {
         setReport(data)
       } else {
         console.error('Error fetching report:', data)
@@ -180,12 +180,23 @@ export default function ReportsPage() {
           </div>
         ) : !report ? (
           <div className="text-center py-12 bg-white rounded-lg shadow">
-            <p className="text-gray-500 text-lg">
+            <p className="text-gray-500 text-lg mb-2">
               No data available for the selected period.
             </p>
-            <p className="text-gray-400 text-sm mt-2">
-              Try selecting a different time range or website.
+            <p className="text-gray-400 text-sm">
+              Reports will be generated once monitoring checks have been performed.
             </p>
+            <p className="text-gray-400 text-sm mt-2">
+              Your website is being monitored. Check back in a few minutes!
+            </p>
+            <div className="mt-6">
+              <a
+                href="/logs"
+                className="text-primary hover:underline text-sm"
+              >
+                View check history →
+              </a>
+            </div>
           </div>
         ) : (
           <div className="space-y-6">
