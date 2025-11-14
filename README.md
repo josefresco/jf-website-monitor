@@ -1,17 +1,27 @@
 # JF Monitor - Website Monitoring Dashboard
 
-A comprehensive website monitoring solution built with Next.js 14, TypeScript, and Prisma. Monitor website uptime, performance, and content changes with real-time alerts via email and Telegram.
+A production-ready website monitoring solution built with Next.js 14, TypeScript, and Prisma. Monitor website uptime, performance, and content changes with automated checks every 15-20 minutes.
+
+**Live Application:** https://jf-monitor.vercel.app
 
 ## Features
 
-- ✅ **Multi-Website Monitoring** - Monitor up to 3 websites simultaneously
-- 📊 **Real-time Dashboard** - Live status updates with auto-refresh
-- 🔔 **Smart Alerts** - Email (via Brevo) and Telegram notifications
-- 📈 **SLA Reports** - Detailed uptime and performance metrics
-- 🔍 **Content Change Detection** - Track HTML changes with configurable thresholds
-- ⚡ **Fast Response Tracking** - Monitor response times and performance
-- 🌐 **Free Hosting** - Deployable on Vercel free tier
-- 🤖 **GitHub Actions Integration** - Automated monitoring with cron jobs
+- ✅ **Multi-Website Monitoring** - Monitor unlimited websites
+- 📊 **Real-time Dashboard** - Live status updates with check history
+- 🔔 **Alert Framework** - Email (Brevo) and Telegram integrations prepared (not configured)
+- 📈 **SLA Reports** - 30/90-day uptime and performance metrics
+- 🔍 **Content Change Detection** - Intelligent HTML diff with configurable thresholds
+- 📸 **Snapshot Comparison** - Side-by-side HTML diff viewer with color-coded changes
+- ⚡ **Performance Tracking** - Response time monitoring and historical trends
+- 🌐 **Free Hosting** - Deployed on Vercel free tier with Vercel Postgres
+- 🤖 **GitHub Actions** - Automated monitoring every 15-20 minutes
+
+## Documentation
+
+- **[CURRENT-SPEC.md](./CURRENT-SPEC.md)** - Comprehensive specification, architecture, API documentation
+- **[SETUP-AUTOMATED-MONITORING.md](./SETUP-AUTOMATED-MONITORING.md)** - Guide to set up GitHub Actions monitoring
+- **[SECURITY-UPDATE.md](./SECURITY-UPDATE.md)** - Security incident response documentation
+- **[CHANGELOG.md](./CHANGELOG.md)** - Version history and changes
 
 ## Tech Stack
 
