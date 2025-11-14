@@ -20,13 +20,13 @@ export default function WebsitesPage() {
   const [formData, setFormData] = useState({
     name: '',
     url: '',
-    checkFrequency: 300,
+    checkFrequency: 900, // 15 minutes (GitHub Actions limitation)
     changeThreshold: 10,
   })
 
   const fetchWebsites = async () => {
     try {
-      const res = await fetch('/api/websites')
+      const res = await fetch('/api/websites?active=true')
       const data = await res.json()
 
       // Handle error response
@@ -59,7 +59,7 @@ export default function WebsitesPage() {
 
       if (res.ok) {
         setShowForm(false)
-        setFormData({ name: '', url: '', checkFrequency: 300, changeThreshold: 10 })
+        setFormData({ name: '', url: '', checkFrequency: 900, changeThreshold: 10 })
         fetchWebsites()
         alert('Website added successfully!')
       } else {
@@ -155,11 +155,13 @@ export default function WebsitesPage() {
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 >
-                  <option value={300}>Every 5 minutes</option>
                   <option value={900}>Every 15 minutes</option>
                   <option value={1800}>Every 30 minutes</option>
                   <option value={3600}>Every hour</option>
                 </select>
+                <p className="text-xs text-gray-500 mt-1">
+                  Note: GitHub Actions may delay checks by 5-10 minutes during high load
+                </p>
               </div>
 
               <div>

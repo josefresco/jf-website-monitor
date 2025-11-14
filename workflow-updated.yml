@@ -1,0 +1,15 @@
+name: Website Monitor
+
+on:
+  schedule:
+    # Runs every 15 minutes (GitHub Actions may delay scheduled runs during high load)
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check websites
+        run: |
+          curl -X POST "${{ secrets.APP_URL }}/api/monitor/check" -H "Content-Type: application/json" -d '{"secret":"${{ secrets.CRON_SECRET }}"}'

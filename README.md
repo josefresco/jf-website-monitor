@@ -165,7 +165,7 @@ npx prisma migrate deploy
 
 3. Enable GitHub Actions in your repository
 
-The workflow will automatically trigger every 5 minutes to check your websites.
+The workflow will automatically trigger every 15-20 minutes to check your websites (GitHub Actions free tier limitation).
 
 ## Usage
 
@@ -176,7 +176,7 @@ The workflow will automatically trigger every 5 minutes to check your websites.
 3. Fill in the form:
    - **Name**: Display name for the website
    - **URL**: Full URL including `https://`
-   - **Check Frequency**: How often to check (5-60 minutes)
+   - **Check Frequency**: How often to check (15-60 minutes)
    - **Change Threshold**: Percentage of HTML change to trigger alert (default 10%)
 4. Click "Save"
 

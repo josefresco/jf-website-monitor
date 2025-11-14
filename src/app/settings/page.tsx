@@ -33,7 +33,14 @@ export default function SettingsPage() {
       const res = await fetch('/api/alerts/config')
       if (res.ok) {
         const data = await res.json()
-        setConfig(data)
+        // Normalize null values to empty strings or false
+        setConfig({
+          ...data,
+          emailFrom: data.emailFrom || '',
+          brevoApiKey: data.brevoApiKey || '',
+          telegramBotToken: data.telegramBotToken || '',
+          telegramChatId: data.telegramChatId || '',
+        })
       } else {
         // No config exists yet, create default
         setConfig({
@@ -65,10 +72,34 @@ export default function SettingsPage() {
     setMessage(null)
 
     try {
+      // Only send the fields that the API accepts
+      const updateData: any = {
+        emailEnabled: config.emailEnabled,
+        emailTo: config.emailTo,
+        emailFrom: config.emailFrom,
+        telegramEnabled: config.telegramEnabled,
+        alertOnDown: config.alertOnDown,
+        alertOnChange: config.alertOnChange,
+        alertOnRecovery: config.alertOnRecovery,
+      }
+
+      // Only include optional fields if they have values
+      if (config.brevoApiKey && config.brevoApiKey !== '***') {
+        updateData.brevoApiKey = config.brevoApiKey
+      }
+      if (config.telegramBotToken && config.telegramBotToken !== '***') {
+        updateData.telegramBotToken = config.telegramBotToken
+      }
+      if (config.telegramChatId) {
+        updateData.telegramChatId = config.telegramChatId
+      }
+
+      console.log('Sending update:', updateData)
+
       const res = await fetch('/api/alerts/config', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(config),
+        body: JSON.stringify(updateData),
       })
 
       if (res.ok) {
@@ -76,8 +107,19 @@ export default function SettingsPage() {
         setConfig(updated)
         setMessage({ type: 'success', text: 'Settings saved successfully!' })
       } else {
-        const error = await res.json()
-        setMessage({ type: 'error', text: error.error || 'Failed to save settings' })
+        let errorMessage = 'Failed to save settings'
+        try {
+          const error = await res.json()
+          console.error('API error response:', error)
+          errorMessage = error.error || errorMessage
+          if (error.details) {
+            console.error('Validation details:', error.details)
+            errorMessage += ': ' + JSON.stringify(error.details)
+          }
+        } catch (e) {
+          // Response wasn't JSON, use default message
+        }
+        setMessage({ type: 'error', text: errorMessage })
       }
     } catch (error) {
       console.error('Error saving config:', error)

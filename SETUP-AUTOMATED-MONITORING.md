@@ -57,8 +57,8 @@ name: Website Monitor
 
 on:
   schedule:
-    # Run every 5 minutes
-    - cron: '*/5 * * * *'
+    # Run every 15 minutes (GitHub Actions free tier limitation)
+    - cron: '*/15 * * * *'
   workflow_dispatch: # Allow manual trigger
 
 jobs:
@@ -89,7 +89,7 @@ jobs:
 5. Go to your dashboard: https://jf-monitor-5aengd1k3-josiah-coles-projects.vercel.app/dashboard
 6. You should see data!
 
-**Done!** Your website will now be checked every 5 minutes automatically.
+**Done!** Your website will now be checked every 15-20 minutes automatically (GitHub Actions free tier limitation).
 
 ---
 
@@ -111,7 +111,7 @@ Add this to your `vercel.json`:
   },
   "crons": [{
     "path": "/api/monitor/check",
-    "schedule": "*/5 * * * *"
+    "schedule": "*/15 * * * *"
   }]
 }
 ```
@@ -168,7 +168,7 @@ After setup, verify everything is working:
 ### Check GitHub Actions
 
 1. Go to: https://github.com/josefresco/jf-website-monitor/actions
-2. You should see "Website Monitor" running every 5 minutes
+2. You should see "Website Monitor" running every 15-20 minutes
 3. Click on any run to see the output
 
 ### Common Issues
@@ -185,7 +185,7 @@ After setup, verify everything is working:
 - Solution: Disable Vercel Deployment Protection (see Step 1)
 
 **Issue: No data in dashboard**
-- Solution: Wait 5 minutes after first action runs
+- Solution: Wait 15-20 minutes after first action runs
 - Manually trigger: Actions → Website Monitor → Run workflow
 
 ---
@@ -194,34 +194,41 @@ After setup, verify everything is working:
 
 Once automated monitoring is set up:
 
-1. **Every 5 minutes**: GitHub Actions triggers a check
+1. **Every 15-20 minutes**: GitHub Actions triggers a check (free tier limitation)
 2. **Your website is fetched**: Status code and response time recorded
 3. **Content is analyzed**: HTML changes detected
 4. **Data is stored**: Checks, incidents, and snapshots saved
 5. **Dashboard updates**: Real-time status displayed
 6. **Reports generate**: After 10+ checks, reports become available
 
+**Note**: GitHub Actions scheduled workflows may be delayed during high load. Actual check intervals range from 15-30 minutes on the free tier.
+
 ---
 
 ## Timeline for Data
 
-- **First check**: Within 5 minutes of setup
-- **Usable dashboard**: After 3-5 checks (15-25 minutes)
+- **First check**: Within 15-20 minutes of setup
+- **Usable dashboard**: After 3-5 checks (1-2 hours)
 - **24-hour stats**: After 24 hours
-- **Meaningful reports**: After 50+ checks (4-6 hours)
+- **Meaningful reports**: After 50+ checks (12-24 hours)
 
 ---
 
 ## Monitoring Frequency
 
-Current setting: **Every 5 minutes**
+Current setting: **Every 15 minutes** (due to GitHub Actions free tier limitations)
 
-To change:
+**Note**: GitHub Actions scheduled workflows on the free tier are not guaranteed to run at exact intervals. Expect 15-30 minute intervals.
+
+To change frequency:
 1. Edit `.github/workflows/monitor.yml`
-2. Change `cron: '*/5 * * * *'` to:
-   - Every minute: `'* * * * *'`
-   - Every 15 minutes: `'*/15 * * * *'`
+2. Change `cron: '*/15 * * * *'` to:
+   - Every 30 minutes: `'*/30 * * * *'`
    - Every hour: `'0 * * * *'`
+
+**For more reliable scheduling**, consider:
+- Upgrading to Vercel Pro ($20/month) for Vercel Cron
+- Using a third-party cron service like cron-job.org (free tier available)
 
 ---
 
@@ -240,7 +247,7 @@ To change:
 3. Create `.github/workflows/monitor.yml` (copy from above)
 4. Enable GitHub Actions
 5. Run workflow manually to test
-6. Done! Checks run every 5 minutes
+6. Done! Checks run every 15-20 minutes (GitHub Actions free tier limitation)
 
 ---
 

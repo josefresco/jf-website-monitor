@@ -1,16 +1,13 @@
 name: Website Monitor
-
 on:
   schedule:
-    # Run every 5 minutes
     - cron: '*/5 * * * *'
-  workflow_dispatch: # Allow manual trigger
-
+  workflow_dispatch:
 jobs:
   monitor:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Website Check
+      - name: Check websites
         run: |
           curl -X POST "${{ secrets.APP_URL }}/api/monitor/check" \
             -H "Content-Type: application/json" \
