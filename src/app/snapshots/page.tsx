@@ -186,6 +186,28 @@ export default function SnapshotsPage() {
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-xl font-semibold mb-4">Comparison Results</h2>
 
+            {/* Snapshot Info */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 p-4 bg-gray-50 rounded-lg text-sm">
+              <div>
+                <div className="font-semibold text-gray-700 mb-1">Old Snapshot</div>
+                <div className="text-xs text-gray-600">
+                  {new Date(compareResult.oldSnapshot.capturedAt).toLocaleString()}
+                </div>
+                <div className="text-xs text-gray-500">
+                  Hash: {compareResult.oldSnapshot.htmlHash.substring(0, 16)}...
+                </div>
+              </div>
+              <div>
+                <div className="font-semibold text-gray-700 mb-1">New Snapshot</div>
+                <div className="text-xs text-gray-600">
+                  {new Date(compareResult.newSnapshot.capturedAt).toLocaleString()}
+                </div>
+                <div className="text-xs text-gray-500">
+                  Hash: {compareResult.newSnapshot.htmlHash.substring(0, 16)}...
+                </div>
+              </div>
+            </div>
+
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
               <div className="text-center">
@@ -193,6 +215,9 @@ export default function SnapshotsPage() {
                   {compareResult.stats.changePercent}%
                 </div>
                 <div className="text-sm text-gray-600">Total Change</div>
+                <div className="text-xs text-gray-400 mt-1">
+                  ({compareResult.stats.addedLines + compareResult.stats.removedLines} / {compareResult.stats.totalLines})
+                </div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-green-600">
