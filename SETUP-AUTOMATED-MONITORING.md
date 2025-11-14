@@ -41,7 +41,7 @@ You have **two options** - choose the one that works best for you:
 
 **Secret 2:**
 - Name: `CRON_SECRET`
-- Value: `9f09d3c6baf33e4e54f34c04f67722babf025e1745a2d50be1a867946864fc06`
+- Value: `[Get this from Vercel: Settings → Environment Variables → CRON_SECRET]`
 
 ### Step 3: Add GitHub Workflow File
 
@@ -150,7 +150,7 @@ Then send a POST request with the secret:
 ```bash
 curl -X POST https://jf-monitor-5aengd1k3-josiah-coles-projects.vercel.app/api/monitor/check \
   -H "Content-Type: application/json" \
-  -d '{"secret":"9f09d3c6baf33e4e54f34c04f67722babf025e1745a2d50be1a867946864fc06"}'
+  -d '{"secret":"YOUR_CRON_SECRET_HERE"}'
 ```
 
 After running this, check your dashboard - you should see data!

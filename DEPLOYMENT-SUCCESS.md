@@ -168,7 +168,7 @@ This is required to trigger monitoring checks via API.
 
 ### Database Connection
 ```
-postgresql://postgres:q6JuryD5fe7PiQ8u@db.pjmbkqujnhqulfhibado.supabase.co:6543/postgres?pgbouncer=true&connection_limit=1
+postgresql://postgres:YOUR_PASSWORD@db.pjmbkqujnhqulfhibado.supabase.co:6543/postgres?pgbouncer=true&connection_limit=1
 ```
 
 ### Project Structure

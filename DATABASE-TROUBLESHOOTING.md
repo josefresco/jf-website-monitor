@@ -10,7 +10,7 @@ Vercel cannot connect to Supabase database from serverless functions.
 
 ## Current Connection String
 ```
-postgresql://postgres:q6JuryD5fe7PiQ8u@db.pjmbkqujnhqulfhibado.supabase.co:5432/postgres?sslmode=require
+postgresql://postgres:YOUR_PASSWORD@db.pjmbkqujnhqulfhibado.supabase.co:5432/postgres?sslmode=require
 ```
 
 ## Solution Options
@@ -44,13 +44,13 @@ postgresql://postgres:q6JuryD5fe7PiQ8u@db.pjmbkqujnhqulfhibado.supabase.co:5432/
 
 ```bash
 # Transaction Pooler with Prisma settings
-postgresql://postgres:q6JuryD5fe7PiQ8u@db.pjmbkqujnhqulfhibado.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1
+postgresql://postgres:YOUR_PASSWORD@db.pjmbkqujnhqulfhibado.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1
 
 # Session Pooler
 postgresql://postgres.pjmbkqujnhqulfhibado:q6JuryD5fe7PiQ8u@aws-0-us-east-1.pooler.supabase.com:6543/postgres
 
 # Direct with additional parameters
-postgresql://postgres:q6JuryD5fe7PiQ8u@db.pjmbkqujnhqulfhibado.supabase.co:5432/postgres?sslmode=require&connect_timeout=10
+postgresql://postgres:YOUR_PASSWORD@db.pjmbkqujnhqulfhibado.supabase.co:5432/postgres?sslmode=require&connect_timeout=10
 ```
 
 ### Option C: Use Prisma Accelerate (Advanced)
