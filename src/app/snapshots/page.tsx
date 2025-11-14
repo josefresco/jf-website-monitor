@@ -249,7 +249,7 @@ export default function SnapshotsPage() {
               <p className="text-sm text-blue-800">
                 <strong>Note:</strong> Change percentage can exceed 100% when most
                 content is replaced. For example, if 100 lines are removed and 100 new
-                lines are added, that's 200 changed lines / 100 total = 200% change.
+                lines are added, that&apos;s 200 changed lines / 100 total = 200% change.
               </p>
             </div>
           </div>
