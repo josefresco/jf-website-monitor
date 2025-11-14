@@ -44,6 +44,7 @@ export default function SnapshotsPage() {
   const [selectedNew, setSelectedNew] = useState<string>('')
   const [compareResult, setCompareResult] = useState<CompareResult | null>(null)
   const [loading, setLoading] = useState(false)
+  const [showOnlyChanges, setShowOnlyChanges] = useState(false)
 
   useEffect(() => {
     fetchWebsites()
@@ -221,25 +222,46 @@ export default function SnapshotsPage() {
 
             {/* Diff Display */}
             <div className="border border-gray-300 rounded-lg overflow-hidden">
-              <div className="bg-gray-100 px-4 py-2 border-b border-gray-300">
+              <div className="bg-gray-100 px-4 py-2 border-b border-gray-300 flex justify-between items-center">
                 <h3 className="font-semibold text-sm text-gray-700">HTML Diff</h3>
+                <label className="flex items-center text-sm text-gray-700">
+                  <input
+                    type="checkbox"
+                    checked={showOnlyChanges}
+                    onChange={(e) => setShowOnlyChanges(e.target.checked)}
+                    className="mr-2"
+                  />
+                  Show only changes
+                </label>
               </div>
-              <div className="max-h-96 overflow-y-auto">
-                <pre className="text-xs font-mono p-4">
-                  {compareResult.diff.map((part, index) => (
-                    <span
-                      key={index}
-                      className={
-                        part.added
-                          ? 'bg-green-100 text-green-800'
-                          : part.removed
-                          ? 'bg-red-100 text-red-800'
-                          : 'text-gray-700'
-                      }
-                    >
-                      {part.value}
-                    </span>
-                  ))}
+              <div className="overflow-x-auto bg-gray-50">
+                <pre className="text-sm font-mono p-4 leading-relaxed">
+                  {compareResult.diff
+                    .filter((part) => !showOnlyChanges || part.added || part.removed)
+                    .map((part, index) => {
+                      const lines = part.value.split('\n')
+                      return lines.map((line, lineIndex) => {
+                        if (lineIndex === lines.length - 1 && line === '') return null
+                        const prefix = part.added ? '+ ' : part.removed ? '- ' : '  '
+                        return (
+                          <div
+                            key={`${index}-${lineIndex}`}
+                            className={
+                              part.added
+                                ? 'bg-green-50 text-green-900 border-l-4 border-green-500 px-2 py-1'
+                                : part.removed
+                                ? 'bg-red-50 text-red-900 border-l-4 border-red-500 px-2 py-1'
+                                : 'text-gray-600 px-2 py-1 hover:bg-gray-100'
+                            }
+                          >
+                            <span className="text-gray-400 select-none mr-2">
+                              {prefix}
+                            </span>
+                            {line || ' '}
+                          </div>
+                        )
+                      })
+                    })}
                 </pre>
               </div>
             </div>
