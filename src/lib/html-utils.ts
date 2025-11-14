@@ -41,8 +41,16 @@ export function normalizeHtml(html: string): string {
     normalized = normalized.replace(pattern, '')
   })
 
-  // Normalize whitespace
-  normalized = normalized.replace(/\s+/g, ' ').trim()
+  // Normalize whitespace while preserving line structure
+  // First, normalize spaces within lines (multiple spaces -> single space)
+  normalized = normalized.replace(/[ \t]+/g, ' ')
+
+  // Remove trailing/leading whitespace from each line
+  normalized = normalized
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0) // Remove empty lines
+    .join('\n')
 
   return normalized
 }
